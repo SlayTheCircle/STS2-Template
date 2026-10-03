@@ -1,0 +1,5 @@
+{
+  "STS2_TEMPLATE_POWER_TEMPLATE_VIGOR_POWER.title": "Template Vigor",
+  "STS2_TEMPLATE_POWER_TEMPLATE_VIGOR_POWER.description": "Increases your damage by the stack amount.",
+  "STS2_TEMPLATE_POWER_TEMPLATE_VIGOR_POWER.smartDescription": "Your damage +[blue]{Amount}[/blue]."
+}

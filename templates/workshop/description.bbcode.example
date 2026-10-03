@@ -1,0 +1,13 @@
+<中文名> | <英文名> —— <一句话简介>
+
+[b]English[/b]
+<English one-liner. Describe your mod's core mechanics here.>
+
+[b]需求 / Requirements[/b]
+[list]
+[*]游戏版本 / Game version: 0.107.1 或 0.111.0(按当前分支自动适配 / auto-picked per branch)
+[*]依赖 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3747602295]RitsuLib[/url] >= 0.6.2(需先订阅 / subscribe first)
+[/list]
+
+主菜单 → Mods 启用 / Enable in Main Menu → Mods.
+源码与发行 / Source & releases: [url]https://github.com/SlayTheCircle/__MOD_ID__[/url]

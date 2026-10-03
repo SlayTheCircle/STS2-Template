@@ -1,0 +1,10 @@
+{
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.title": "Forest Rest",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.description": "Pause under the trees.",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.options.REST.title": "Rest",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.options.REST.description": "Heal {Heal} HP.",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.options.LEAVE.title": "Leave",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.options.LEAVE.description": "Continue onward.",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.RESTED.description": "You feel refreshed.",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.LEFT.description": "You continue onward."
+}

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GameRefsDir>$(GAME_REFS_DIR)</GameRefsDir>
+    <RitsuLibDir>$(RITSULIB_DIR)</RitsuLibDir>
+    <RitsuLibReferenceTarget>$(RITSULIB_TARGET)</RitsuLibReferenceTarget>
+    <DefineConstants Condition="'$(RITSULIB_TARGET)' == '0.107.1'">$(DefineConstants);MOD_GAME_0107_1</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/STS2-Template/STS2-Template.csproj" />
+    <Compile Include="../../examples/**/*.cs" />
+    <Compile Include="../../src/STS2-Template/Content/Compat/*.cs" />
+    <Reference Include="sts2"><HintPath>$(GameRefsDir)/sts2.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="GodotSharp"><HintPath>$(GameRefsDir)/GodotSharp.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <Import Project="$(RitsuLibDir)/RitsuLib.References.props" />
+</Project>

@@ -1,0 +1,18 @@
+{
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.title": "示例角色",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.titleObject": "示例角色",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.description": "模板骨架的示例角色。",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.unlockText": "安装后即可游玩。",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.aromaPrinciple": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.bestiaryQuote": "尚未书写。",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.cardsModifierTitle": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.cardsModifierDescription": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.eventDeathPrevention": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.goldMonologue": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.possessiveAdjective": "她的",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.pronounObject": "她",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.pronounPossessive": "她的",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.pronounSubject": "她",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.banter.alive.endTurnPing": "该我了。",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.banter.dead.endTurnPing": "……交给你了。"
+}

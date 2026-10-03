@@ -1,0 +1,5 @@
+{
+  "STS2_TEMPLATE_ENCHANTMENT_TEMPLATE_TRAINING.title": "示例特训",
+  "STS2_TEMPLATE_ENCHANTMENT_TEMPLATE_TRAINING.description": "支援：被附魔的攻击牌造成的伤害+{Amount}。",
+  "STS2_TEMPLATE_ENCHANTMENT_TEMPLATE_TRAINING.extraCardText": "[gold]示例特训[/gold]：伤害+{Amount}"
+}

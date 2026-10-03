@@ -1,0 +1,142 @@
+name: Release build
+
+# tag 推送触发：检出私有构建输入（circle-refs 编译参考与美术母版仓）后在托管 runner
+# 上双目标完整构建（package.sh 编排 0.111.0 与 0.107.1 + 引导壳），产出三个候选包——
+# 每目标平铺安装 ZIP 与工坊变体布局 ZIP——并创建草稿 Release；维护者验收后手动发布。
+# 发行说明取自 CHANGELOG.md 的对应 `## [版本]` 段落，缺失即中止。
+# 模组身份（MOD_ID）从清单派生；美术仓名按 STS2-<Mod>-art 约定，经 ART_REPO 覆盖。
+# fork PR 拿不到 secret，本工作流不会为其执行任何构建。
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-build:
+    if: ${{ vars.BUILD_INPUTS_REPO != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@v4
+
+      - name: 从清单读取身份并选择美术输入
+        env:
+          ART_REPO: ${{ vars.ART_REPO }}
+        run: |
+          source scripts/dev-env.sh
+          echo "MOD_ID=$MOD_ID" >> "$GITHUB_ENV"
+          echo "ART_REPO=${ART_REPO:-${GITHUB_REPOSITORY}-art}" >> "$GITHUB_ENV"
+
+      - name: 校验 tag 与清单版本一致
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" != tag ]]; then
+            echo '错误: 本工作流只在 tag (v*) 上运行；分支请使用 ci.yml / compile.yml。' >&2
+            exit 1
+          fi
+          version=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["version"])' "$MOD_ID.json")
+          tag="${GITHUB_REF_NAME#v}"
+          if [[ "$tag" != "$version" ]]; then
+            echo "错误: tag ${GITHUB_REF_NAME} 与清单版本 $version 不一致。" >&2
+            exit 1
+          fi
+          echo "TAG=$tag" >> "$GITHUB_ENV"
+
+      - name: 检出构建输入
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.BUILD_INPUTS_REPO }}
+          token: ${{ secrets.REFS_TOKEN }}
+          path: refs
+
+      - name: 检出美术母版
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ART_REPO }}
+          token: ${{ secrets.REFS_TOKEN }}
+          path: art
+
+      - name: 校验输入版本目录并记录来源
+        run: |
+          for target in 0.111.0 0.107.1; do
+            [[ -d "refs/game-refs/$target" ]] || { echo "错误: circle-refs 缺少 game-refs/$target。" >&2; exit 1; }
+          done
+          echo "REFS_COMMIT=$(git -C refs rev-parse --short HEAD)" >> "$GITHUB_ENV"
+          echo "ART_COMMIT=$(git -C art rev-parse --short HEAD)" >> "$GITHUB_ENV"
+
+      - name: 安装 .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: 缓存 Godot
+        uses: actions/cache@v4
+        with:
+          path: .tools/godot
+          key: godot-4.5.1-linux-x86_64
+
+      - name: 获取 Godot
+        run: bash scripts/fetch-godot.sh
+
+      - name: 生成派生素材
+        env:
+          ART_SOURCE_DIR: ${{ github.workspace }}/art
+        run: |
+          command -v convert >/dev/null || { sudo apt-get update; sudo apt-get install -y --no-install-recommends imagemagick; }
+          bash scripts/prep-art.sh
+
+      - name: 双目标完整构建并打包
+        env:
+          MOD_PACKAGE_CHANNEL: release
+          RITSULIB_DIR: ${{ github.workspace }}/refs/RitsuLib
+          MOD_GAME_REFS_1110: ${{ github.workspace }}/refs/game-refs/0.111.0
+          MOD_GAME_REFS_1071: ${{ github.workspace }}/refs/game-refs/0.107.1
+        run: bash scripts/package.sh
+
+      - name: 组装发行说明
+        run: |
+          python3 - "$TAG" CHANGELOG.md /tmp/release-notes.md <<'PYCODE'
+          import re
+          import sys
+          tag, src, dst = sys.argv[1:4]
+          text = open(src, encoding='utf-8').read()
+          match = re.search(rf'^## \[{re.escape(tag)}\][^\n]*\n(.*?)(?=^## \[|\Z)', text, re.M | re.S)
+          if not match:
+              raise SystemExit(f'CHANGELOG 缺少 ## [{tag}] 段落。')
+          body = match.group(1).strip()
+          if not body:
+              raise SystemExit(f'CHANGELOG 的 ## [{tag}] 段落为空。')
+          open(dst, 'w', encoding='utf-8').write(body + '\n')
+          PYCODE
+          ritsu_min=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["dependencies"][0]["min_version"])' "$MOD_ID.json")
+          {
+            echo
+            echo '---'
+            echo
+            echo "**游戏目标**: 0.107.1 / 0.111.0（工坊物品按当前游戏版本自动选择）· **RitsuLib**: >= $ritsu_min"
+            echo "**构建输入**: circle-refs@$REFS_COMMIT · 美术@$ART_COMMIT · 源码@${GITHUB_SHA::8}"
+            echo
+            echo '```'
+            cat mods-dist/$MOD_ID-*.sha256
+            echo '```'
+          } >> /tmp/release-notes.md
+
+      - name: 创建草稿 Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            mods-dist/$MOD_ID-*-game-0.107.1.zip \
+            mods-dist/$MOD_ID-*-game-0.111.0.zip \
+            mods-dist/$MOD_ID-*-workshop.zip \
+            mods-dist/$MOD_ID-*.sha256 \
+            --draft \
+            --title "$MOD_ID v$TAG (game 0.107.1 / 0.111.0)" \
+            --notes-file /tmp/release-notes.md
+          echo "草稿 Release 已创建；下载试玩验收通过后手动发布。"

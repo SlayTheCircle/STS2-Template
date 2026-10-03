@@ -1,0 +1,18 @@
+{
+  "id": "STS2-Template",
+  "pck_name": "STS2-Template",
+  "name": "模板角色 | Template",
+  "author": "3aKHP",
+  "description": "SlayTheCircle Mod 模板的编译骨架：示例角色与内容件，用于验证管线。A compile skeleton for the SlayTheCircle mod template.",
+  "version": "0.1.0",
+  "has_pck": true,
+  "has_dll": true,
+  "affects_gameplay": true,
+  "dependencies": [
+    {
+      "id": "STS2-RitsuLib",
+      "min_version": "0.6.2"
+    }
+  ],
+  "min_game_version": "0.107.1"
+}

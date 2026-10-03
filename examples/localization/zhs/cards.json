@@ -1,0 +1,11 @@
+{
+  "STS2_TEMPLATE_CARD_EXAMPLE_CALCULATED_ATTACK.title": "蓄势攻击",
+  "STS2_TEMPLATE_CARD_EXAMPLE_CALCULATED_ATTACK.description": "造成{CalculatedDamage:diff()}点伤害。额外伤害等于你的格挡。",
+  "STS2_TEMPLATE_CARD_EXAMPLE_X_GUARD.title": "全力防御",
+  "STS2_TEMPLATE_CARD_EXAMPLE_X_GUARD.description": "每消耗1点能量，获得{Block:diff()}点格挡。",
+  "STS2_TEMPLATE_CARD_EXAMPLE_COPY_CARD.title": "临时副本",
+  "STS2_TEMPLATE_CARD_EXAMPLE_COPY_CARD.description": "选择一张攻击或能力牌，将它的一张副本加入手牌。",
+  "STS2_TEMPLATE_CARD_EXAMPLE_RECORDED_GUARD.title": "记录防御",
+  "STS2_TEMPLATE_CARD_EXAMPLE_RECORDED_GUARD.description": "获得{Block:diff()}点格挡。",
+  "STS2_TEMPLATE_CARD_EXAMPLE_COPY_CARD.selectionScreenPrompt": "选择要复制的牌。"
+}
