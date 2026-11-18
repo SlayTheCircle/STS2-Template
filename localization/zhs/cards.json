@@ -1,0 +1,8 @@
+{
+  "STS2_TEMPLATE_CARD_TEMPLATE_STRIKE.title": "示例打击",
+  "STS2_TEMPLATE_CARD_TEMPLATE_STRIKE.description": "造成{Damage:diff()}点伤害。",
+  "STS2_TEMPLATE_CARD_TEMPLATE_DEFEND.title": "示例防御",
+  "STS2_TEMPLATE_CARD_TEMPLATE_DEFEND.description": "获得{Block:diff()}点[gold]格挡[/gold]。",
+  "STS2_TEMPLATE_CARD_TEMPLATE_VIGOR.title": "示例昂扬",
+  "STS2_TEMPLATE_CARD_TEMPLATE_VIGOR.description": "本场战斗中，你造成的伤害+{TemplateVigorPower:diff()}。"
+}

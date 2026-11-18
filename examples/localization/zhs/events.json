@@ -1,0 +1,10 @@
+{
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.title": "林间休憩",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.description": "在树荫下停留片刻。",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.options.REST.title": "休息",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.options.REST.description": "恢复{Heal}点生命。",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.options.LEAVE.title": "离开",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.INITIAL.options.LEAVE.description": "继续前行。",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.RESTED.description": "你恢复了精神。",
+  "STS2_TEMPLATE_EVENT_EXAMPLE_REST_EVENT.pages.LEFT.description": "你继续前行。"
+}

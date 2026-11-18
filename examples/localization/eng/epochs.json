@@ -1,0 +1,10 @@
+{
+  "STORY_STS2_TEMPLATE_EXAMPLE": "Example Story",
+  "STS2_TEMPLATE_EXAMPLE_CHARACTER.title": "Departure",
+  "STS2_TEMPLATE_EXAMPLE_CHARACTER.unlockInfo": "Finish a run as the Ironclad.",
+  "STS2_TEMPLATE_EXAMPLE_CHARACTER.description": "A new journey begins.",
+  "STS2_TEMPLATE_EXAMPLE_CHARACTER.unlockText": "Unlock the example character.",
+  "STS2_TEMPLATE_EXAMPLE_CARDS.title": "New Tricks",
+  "STS2_TEMPLATE_EXAMPLE_CARDS.unlockInfo": "Win a run as the example character.",
+  "STS2_TEMPLATE_EXAMPLE_CARDS.description": "Learn new tricks."
+}

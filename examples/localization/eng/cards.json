@@ -1,0 +1,11 @@
+{
+  "STS2_TEMPLATE_CARD_EXAMPLE_CALCULATED_ATTACK.title": "Gathering Strike",
+  "STS2_TEMPLATE_CARD_EXAMPLE_CALCULATED_ATTACK.description": "Deal {CalculatedDamage:diff()} damage. Additional damage equals your Block.",
+  "STS2_TEMPLATE_CARD_EXAMPLE_X_GUARD.title": "All-in Guard",
+  "STS2_TEMPLATE_CARD_EXAMPLE_X_GUARD.description": "Gain {Block:diff()} Block for each Energy spent.",
+  "STS2_TEMPLATE_CARD_EXAMPLE_COPY_CARD.title": "Temporary Copy",
+  "STS2_TEMPLATE_CARD_EXAMPLE_COPY_CARD.description": "Choose an Attack or Power and add a copy of it to your hand.",
+  "STS2_TEMPLATE_CARD_EXAMPLE_RECORDED_GUARD.title": "Recorded Guard",
+  "STS2_TEMPLATE_CARD_EXAMPLE_RECORDED_GUARD.description": "Gain {Block:diff()} Block.",
+  "STS2_TEMPLATE_CARD_EXAMPLE_COPY_CARD.selectionScreenPrompt": "Choose a card to copy."
+}

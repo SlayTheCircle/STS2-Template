@@ -1,0 +1,5 @@
+{
+  "STS2_TEMPLATE_RELIC_EXAMPLE_SPEND_LEDGER.title": "消费账簿",
+  "STS2_TEMPLATE_RELIC_EXAMPLE_SPEND_LEDGER.description": "记录本局在商店消费的金币。",
+  "STS2_TEMPLATE_RELIC_EXAMPLE_SPEND_LEDGER.flavor": "每一笔都记得。"
+}

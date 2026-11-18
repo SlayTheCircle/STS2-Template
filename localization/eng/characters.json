@@ -1,0 +1,18 @@
+{
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.title": "Template",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.titleObject": "Template",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.description": "The example character of the compile skeleton.",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.unlockText": "Available once installed.",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.aromaPrinciple": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.bestiaryQuote": "Not yet written.",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.cardsModifierTitle": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.cardsModifierDescription": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.eventDeathPrevention": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.goldMonologue": "",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.possessiveAdjective": "her",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.pronounObject": "her",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.pronounPossessive": "her",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.pronounSubject": "she",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.banter.alive.endTurnPing": "My turn.",
+  "STS2_TEMPLATE_CHARACTER_TEMPLATE.banter.dead.endTurnPing": "...it's up to you."
+}

@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# 工坊发布(私有侧脚手架,init 后位于 local_dev/workshop/publish.sh,不入库):
+# 内容取 GitHub Release 工件(与发行物字节同源),经 SteamCMD 上传。
+# 首次发布自动从回写 VDF 捕获物品 ID 回填 publishedfileid.txt;之后同 ID 增量更新。
+# 登录:默认走 steamcmd 交互(密码提示 + Steam Guard);推送确认不可靠或想直接用手机五位码时,
+# 加 --code:脚本静默读密码与当前验证码后立即登录(验证码 30 秒轮换,取码后尽快回车)。
+# 成功登录一次后 steamcmd 缓存凭据,后续免密。
+# 用法: ./publish.sh <steam登录名> <tag> [--code]
+set -euo pipefail
+export LANG=C.UTF-8 LC_ALL=C.UTF-8   # 规避 en_US.UTF-8 缺失告警,保证 VDF 中文按 UTF-8 处理
+
+# ===== 按本 Mod 配置(init 预填;手动改动同样生效) =====
+source "$(dirname "$0")/config.sh"    # init 使用 shell quoting 写入 REPO / VDF_TITLE
+# =====================================================
+
+CODE_MODE=0
+for a in "$@"; do [[ "$a" == "--code" ]] && CODE_MODE=1; done
+ACCOUNT="${1:?用法: publish.sh <steam登录名> <tag> [--code]}"
+TAG="${2:?用法: publish.sh <steam登录名> <tag> [--code]}"
+W="$(cd "$(dirname "$0")" && pwd)"
+STEAMCMD="${STEAMCMD:?请配置 STEAMCMD 指向 steamcmd.sh}"   # 例: ~/tools/steamcmd/steamcmd.sh
+
+[[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([+-][A-Za-z0-9.-]+)?$ ]] || { echo '错误: 请显式填写发行 tag，例如 v0.1.0。' >&2; exit 1; }
+: "${WORKSHOP_OWNER:?请在 config.sh 配置工坊所有者的 SteamID64}"
+[[ "$WORKSHOP_OWNER" =~ ^[0-9]{17}$ ]] || { echo '错误: WORKSHOP_OWNER 应为 17 位 SteamID64。' >&2; exit 1; }
+ID="0"
+if [[ -e "$W/publishedfileid.txt" ]]; then
+    ID="$(tr -d '\r\n' < "$W/publishedfileid.txt")"
+    [[ "$ID" =~ ^[1-9][0-9]*$ ]] || { echo '错误: 已有物品 ID 文件无效；请核对线上物品。' >&2; exit 1; }
+    python3 "$W/check-live.py" "$W" "$ID" "$WORKSHOP_OWNER"
+fi
+
+echo "== 1/4 拉取 Release 工件 $TAG =="
+cd "$W"
+gh release download "$TAG" --repo "$REPO" --clobber
+# 工坊内容取变体布局工件(根引导壳 + 共享 pck + lib/双目标 dll),不使用平铺安装 ZIP。
+# 按 tag 精确取件:目录里可能残留历史版本工件,通配符会一次匹配多个。
+WORKSHOP_ZIP="__MOD_ID__-${TAG#v}-workshop.zip"
+[[ -s "$WORKSHOP_ZIP" ]] || { echo '错误: Release 缺少工坊布局 ZIP。' >&2; exit 1; }
+sha256sum -c "$WORKSHOP_ZIP.sha256"
+rm -rf extract && unzip -qo "$WORKSHOP_ZIP" -d extract
+rsync -a --delete extract/__MOD_ID__/ content/
+rm -rf extract
+for f in __MOD_ID__.json __MOD_ID__.dll __MOD_ID__.pck; do
+    [[ -s "content/$f" ]] || { echo "错误: 内容不完整(缺 $f)。" >&2; exit 1; }
+done
+
+echo "== 2/4 渲染 VDF =="
+
+echo "物品 ID: ${ID}(0=首发)"
+# 描述取 description.bbcode 的真实换行——steamcmd 的 VDF 不解析 \n 转义,会原样透传反斜杠。
+python3 "$W/render-vdf.py" "$W" "$ID" "$VDF_TITLE"
+
+echo "== 3/4 上传(首次需交互登录) =="
+if [[ "$CODE_MODE" == 1 ]]; then
+    read -rsp "Steam 密码: " PW; echo
+    read -rsp "Steam Guard 五位验证码(手机 App→令牌当前码): " GUARD; echo
+    "$STEAMCMD" +login "$ACCOUNT" "$PW" "$GUARD" +workshop_build_item "$W/workshop.vdf" +quit 2>&1 | tee upload.log
+    PW='****************' GUARD='*****'
+else
+    "$STEAMCMD" +login "$ACCOUNT" +workshop_build_item "$W/workshop.vdf" +quit 2>&1 | tee upload.log
+fi
+
+echo "== 4/4 核对结果 =="
+if grep -q 'Success\.' upload.log && ! grep -qiE 'ERROR!|Failed to update|Failure' upload.log; then
+    echo '上传成功。'
+else
+    echo '上传可能失败,请检查 upload.log。' >&2
+    exit 1
+fi
+if [[ "$ID" == "0" ]]; then
+    # SteamCMD writes the created ID back into the VDF; unrelated numbers in logs are not item IDs.
+    newid="$(python3 - "$W/workshop.vdf" <<'PYID'
+import re, sys
+from pathlib import Path
+matches = re.findall(r'"publishedfileid"\s+"([1-9][0-9]*)"', Path(sys.argv[1]).read_text())
+print(matches[0] if len(matches) == 1 else '')
+PYID
+)"
+    if [[ -z "$newid" ]]; then
+        echo '上传完成，但未读到新物品 ID。请核对线上物品并写入 publishedfileid.txt，避免重复首发。' >&2
+        exit 1
+    fi
+    printf '%s\n' "$newid" > publishedfileid.txt
+    ID="$newid"
+    python3 "$W/check-live.py" "$W" "$ID" "$WORKSHOP_OWNER" --output live-after.json
+else
+    python3 "$W/check-live.py" "$W" "$ID" "$WORKSHOP_OWNER" --previous "$W/live-before.json" --output live-after.json
+fi
+echo "https://steamcommunity.com/sharedfiles/filedetails/?id=$ID"

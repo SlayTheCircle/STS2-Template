@@ -1,0 +1,5 @@
+{
+  "STS2_TEMPLATE_RELIC_EXAMPLE_SPEND_LEDGER.title": "Spending Ledger",
+  "STS2_TEMPLATE_RELIC_EXAMPLE_SPEND_LEDGER.description": "Tracks Gold spent on purchases this run.",
+  "STS2_TEMPLATE_RELIC_EXAMPLE_SPEND_LEDGER.flavor": "Every purchase accounted for."
+}

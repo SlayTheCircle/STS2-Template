@@ -1,0 +1,41 @@
+{
+  "player": "AnimationPlayer",
+  "clips": {
+    "idle": true,
+    "action": false,
+    "exit": false,
+    "return": false
+  },
+  "samples": 21,
+  "transitions": [
+    [
+      "exit",
+      1.0,
+      "return",
+      0.0
+    ],
+    [
+      "return",
+      1.0,
+      "idle",
+      0.0
+    ]
+  ],
+  "view": {
+    "width": 640,
+    "height": 480,
+    "position": [
+      320,
+      260
+    ],
+    "scale": 1.0
+  },
+  "world_z": -10,
+  "foreground_z": 0,
+  "joint_links": [
+    [
+      "Body/Arm",
+      "Body/Arm/Forearm"
+    ]
+  ]
+}

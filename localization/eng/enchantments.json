@@ -1,0 +1,5 @@
+{
+  "STS2_TEMPLATE_ENCHANTMENT_TEMPLATE_TRAINING.title": "Template Training",
+  "STS2_TEMPLATE_ENCHANTMENT_TEMPLATE_TRAINING.description": "Support: the enchanted attack card deals +{Amount} damage.",
+  "STS2_TEMPLATE_ENCHANTMENT_TEMPLATE_TRAINING.extraCardText": "[gold]Template Training[/gold]: +{Amount} damage"
+}
